@@ -1,4 +1,14 @@
 // ==================================================================================================
+/*
+Question List :: Day 1 :: Arrays
+1) Leetcode 48. Rotate Image :: https://leetcode.com/problems/rotate-image
+2) Leetcode 56. Merge Intervals :: https://leetcode.com/problems/merge-intervals/
+3) Leetcode 88. Merge Sorted Array :: https://leetcode.com/problems/merge-sorted-array
+4) Leetcode 287. Find the Duplicate Number :: https://leetcode.com/problems/find-the-duplicate-number/
+5) ** https://www.interviewbit.com/problems/repeat-and-missing-number-array/
+6) ** Count Inversions in array :: (Remember/Revisit Often)
+*/
+// ==================================================================================================
 #include <bits/stdc++.h>
 using namespace std;
 // ==================================================================================================
@@ -169,9 +179,87 @@ Approach #3
 modifying the array so that arr[index] should contains index+1 num , if its'
 already there more than once return it
 
+Approach #4
+Using binary search O(n log(n)) soln
+*/
+
+
+//=====================================================================================================
+// 5) https://www.interviewbit.com/problems/repeat-and-missing-number-array/
+
+// ** All approaches : https://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
+// Approach #1: Using maps (but qn asked O(1) auxillary space, so avoid this soln)
+
+/* Approach #2: Using Maths : Make two equations using sum and sum of squares
+ Let x = repeating no, y = missing no
+ We know, 
+- sum = n(n+1)/2 
+- sum_squares  = n*(n+1)*(2n+1)/6  .....(eqn ii)
+=> sum(a[0...n-1]) - sum = x-y                                                .....(eqn i)
+=> sum(square(a[0])+square(a[1])+...square(a[n-1])) - sum_squares = x^2 - y^2 .....(eqn ii)
+USe above 2 eqns to solve for x and y 
+Note: overflow may occur in above soln, in above soln as summing squares and numbers of entire array, so prefer XOR soln over this 
+*/
+
+/* Approach #3: Using XOR
 */
 //=====================================================================================================
-// 5) https://www.interviewbit.com/problems/repeat-and-missing-number-array/ 
-//=====================================================================================================
-// 6) https://www.codingninjas.com/codestudio/problems/count-inversions_615
+// 6) **Count Inversions in array :: (Remember/Revisit Often)
+//   Practice Links:  
+// - https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1/#
+// - https://www.codingninjas.com/codestudio/problems/count-inversions_615
+
+// Shadab's code : https://github.com/Shadab2/SDE_Sheet/blob/master/DAY2/count_inversions.java
+
+class Solution{
+  public:
+    // arr[]: Input Array
+    // N : Size of the Array arr[]
+    // Function to count inversions in the array.
+    // #define long long long long
+    long long int inversions=0;
+    // void merge_sort(long long *arr,vector<long long>& tem,int left,int right);
+    // void merge(vector<long long>& tem,int left,int mid,int right);
+    long long int inversionCount(long long arr[], long long n)
+    {
+    	vector<long long> tem(n);
+    	for(int i=0;i<n;i++) tem[i]=arr[i];
+        
+    	merge_sort(tem,0,n-1);
+    // 	for(auto x:tem) cout<<x<<" ";
+    // 	cout<<"\n";
+    	return inversions;
+    }
+    void merge_sort(vector<long long>& tem,int left,int right){
+    	if(left>=right) return;
+    	int mid =  left+(right-left)/2;
+    	
+    	merge_sort(tem,left,mid);
+    	merge_sort(tem,mid+1,right);
+    	
+    	merge(tem,left,mid,right);
+    }
+    void merge(vector<long long>& tem,int left,int mid,int right){
+    	int x,i,j,n1=mid-left+1,n2=right-mid;
+    	vector<long long> a(n1),b(n2);
+    	
+    	for(i=0;i<n1;i++) a[i]=tem[left+i];
+    	for(i=0;i<n2;i++) b[i]=tem[mid+1+i];
+    	
+    	i=j=0;
+    	x=left; // this is imp
+    	while(i<n1 && j<n2){
+    		if(a[i]<=b[j]) tem[x++]=a[i++];
+    		else{			
+    			inversions+=(n1-i);// n1 - i = n1-1-i+1
+    			tem[x++]=b[j++];
+    		}
+    	}
+    	
+    	while(i<n1) tem[x++]=a[i++];
+    	while(j<n2) tem[x++]=b[j++];
+    }
+};
+// TC : O(n log n)
+// modify merge sort also to count no of inversions
 //=====================================================================================================
