@@ -1,7 +1,12 @@
 // =====================================================================================================================================
 /*
 Question List :: Day 3 :: Arrays III
-
+1) Leetcode 74. Search a 2D Matrix :: https://leetcode.com/problems/search-a-2d-matrix
+2) *Leetcode 50. Pow(x, n) :: Leetcode https://leetcode.com/problems/powx-n/
+3) *Leetcode 169. Majority Element :: https://leetcode.com/problems/majority-element/ : moore's voting algo
+4) **Leetcode 229. Majority Element II :: https://leetcode.com/problems/majority-element-ii/
+5) **62. Unique Paths :: https://leetcode.com/problems/unique-paths/
+6) **Reverse Pairs (REDO)
 
 */
 // =====================================================================================================================================
@@ -90,7 +95,7 @@ Line 4: Char 34: runtime error: signed integer overflow: -1 * -2147483648 cannot
 */
 
 // =====================================================================================================================================
-// 3) Lettcode 169. Majority Element :: https://leetcode.com/problems/majority-element/
+// 3) Leetcode 169. Majority Element :: https://leetcode.com/problems/majority-element/
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
@@ -160,7 +165,7 @@ public:
     }
 };
 // =====================================================================================================================================
-// 5) 
+// 5) 62. Unique Paths :: https://leetcode.com/problems/unique-paths/
 class Solution {
 public:
     int uniquePaths(int m, int n) {
@@ -184,7 +189,69 @@ public:
             ans=ans*(n+i-1)/i;
         }
         return (int)(ans+0.01);
+
+        // nCr : https://cp-algorithms.com/combinatorics/binomial-coefficients.html#straightforward-calculation-using-analytical-formula
         */
+    }
+};
+// =====================================================================================================================================
+// 6) Reverse Pairs (REDO)
+class Solution {
+public:
+    int pairs=0;
+    int reversePairs(vector<int>& nums) {
+        // similar to count inversions :: but with an added condition
+        // modify merge-sort algo
+        vector<int> tem(nums.size());
+        for(int i=0;i<nums.size();i++) tem[i]=nums[i];
+        merge_sort(tem,0,tem.size()-1);
+        // cout<<"===\n";
+        return pairs;
+    }
+    void merge_sort(vector<int>& tem,int left,int right){
+        if(left>=right) return;
+        int mid = left+(right-left)/2;
+        
+        merge_sort(tem,left,mid);
+        merge_sort(tem,mid+1,right);
+        
+        merge(tem,left,mid,right);
+        
+    }
+    void merge(vector<int>& tem,int left,int mid,int right){
+        int n1,n2,i,j,k;
+        n1=mid-left+1,n2=right-mid;
+        vector<int> a(n1),b(n2);
+        
+        for(i=0;i<n1;i++){
+            a[i]=tem[left+i];
+        }
+        for(i=0;i<n2;i++){
+            b[i]=tem[mid+i+1];
+        }
+        j=mid+1;
+        for( i = left; i <= mid; i++){
+            while(j <= right && tem[i] > 2  * (long long)tem[j]) {
+              j++;
+            }
+            pairs += (j - (mid + 1));
+        }
+        
+        i=j=0;
+        k=left;// **imp initialization here 
+        while(i<n1 && j<n2){
+            if(a[i]<=b[j]) tem[k++]=a[i++];
+            else{
+                // if(a[i]>2*b[j]){
+                //     pairs+=n1-i+1;
+                //     cout<<a[i]<<" "<<b[j]<<"\n";
+                // } 
+                tem[k++]=b[j++];
+            }
+        }
+        
+        while(i<n1) tem[k++]=a[i++];
+        while(j<n2) tem[k++]=b[j++];
     }
 };
 // =====================================================================================================================================

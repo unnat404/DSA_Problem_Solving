@@ -1,6 +1,6 @@
 // ==================================================================================================
 /*
-Question List :: Day 1 :: Arrays
+Question List :: Day 2 :: Arrays II
 1) Leetcode 48. Rotate Image :: https://leetcode.com/problems/rotate-image
 2) Leetcode 56. Merge Intervals :: https://leetcode.com/problems/merge-intervals/
 3) Leetcode 88. Merge Sorted Array :: https://leetcode.com/problems/merge-sorted-array
